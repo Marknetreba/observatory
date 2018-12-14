@@ -16,6 +16,7 @@ object Visualization {
     val targetLat = location.lat
     val targetLon = location.lon
 
+    // The great-circle distance formula
     //Return distance(km) from other location to the given location
     def getDistTo(other: Location): Double = {
       val rad = math.Pi/180.0
@@ -25,6 +26,10 @@ object Visualization {
       )
     }
 
+    // (Location, Temperature) => (Distance, Temperature)
+    val distTemp = temperatures.map(pair => (getDistTo(pair._1), pair._2))
+
+    // Inverse distance weighting algorithm
     def weightedSum(power: Double, distTemp: Iterable[(Double, Double)]): Double = {
       //(Distance, Temperature) => (InverseDistancePower, WeightedTemperature)
       val weightedPair = distTemp.map(pair => (1.0/math.pow(pair._1, power), pair._2/math.pow(pair._1, power)))
@@ -33,8 +38,6 @@ object Visualization {
       total._2/total._1
     }
 
-    // (Location, Temperature) => (Distance, Temperature)
-    val distTemp = temperatures.map(pair => (getDistTo(pair._1), pair._2))
 
     distTemp.find(_._1 < 1.0) match{
       case Some((_, temp)) => temp
