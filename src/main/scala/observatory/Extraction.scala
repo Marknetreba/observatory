@@ -1,10 +1,8 @@
 package observatory
 
-import java.nio.file.Paths
 import java.time.LocalDate
 
 import org.apache.spark.sql.SparkSession
-import org.apache.spark.sql.functions._
 import org.apache.spark.sql.types._
 
 /**
@@ -12,9 +10,11 @@ import org.apache.spark.sql.types._
   */
 object Extraction {
 
-  val spark: SparkSession = SparkSession.builder().appName("Observatory")
+  val spark: SparkSession = SparkSession.builder()
+    .appName("Observatory")
     .config("spark.executor.memory", "1G")
-    .config("spark.master", "local").getOrCreate()
+    .config("spark.master", "local")
+    .getOrCreate()
 
   import spark.implicits._
 
